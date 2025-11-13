@@ -33,7 +33,7 @@ const nextConfig: NextConfig = {
   },
   webpack: (config) => {
     // Solves the "Unknown module type" error for @mapbox/node-pre-gyp
-    config.resolve.alias['@mapbox/node-pre-gyp/lib/util/nw-pre-gyp'] = path.resolve(
+    config.resolve.alias['@mapbox/node-pre-gyp/lib/util/nw-pre-gyp/index.html'] = path.resolve(
       __dirname,
       'src/lib/empty-module.js'
     );
