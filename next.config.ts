@@ -30,14 +30,11 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-   webpack: (config, { isServer }) => {
-    if (isServer) {
-        // Ignore the specific problematic HTML file
-        config.module.rules.push({
-            test: /@mapbox\/node-pre-gyp\/lib\/util\/nw-pre-gyp\/index\.html$/,
-            use: 'null-loader',
-        });
-    }
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /@mapbox\/node-pre-gyp\/lib\/util\/nw-pre-gyp\/index\.html$/,
+      use: 'null-loader',
+    });
     return config;
   },
 };
