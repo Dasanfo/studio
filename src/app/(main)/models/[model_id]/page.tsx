@@ -1,5 +1,5 @@
 import { ModelDetailClient } from '@/components/model-detail-client';
-import { getModelById, getGlobalMetrics, getPerClassMetrics, getConfusionMatrix } from '@/lib/data';
+import { getModelById, getGlobalMetrics, getPerClassMetrics, getConfusionMatrix, getModels } from '@/lib/data';
 import { notFound } from 'next/navigation';
 
 type ModelPageProps = {
