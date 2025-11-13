@@ -68,7 +68,7 @@ export function ModelDetailClient({
               <CardDescription>Precision, Recall, and F1-Score for each class.</CardDescription>
             </CardHeader>
             <CardContent className="grid gap-6 lg:grid-cols-2">
-              <div className='overflow-auto'>
+              <div className='overflow-auto h-[400px]'>
                 <Table>
                     <TableHeader>
                         <TableRow>

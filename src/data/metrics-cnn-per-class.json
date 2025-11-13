@@ -2,10 +2,10 @@
 {
   "model_id": "cnn",
   "per_class": [
-    { "class_id": 0, "label": "Apple", "precision": 0.95, "recall": 0.94, "f1": 0.945 },
-    { "class_id": 1, "label": "Banana", "precision": 0.98, "recall": 0.97, "f1": 0.975 },
-    { "class_id": 2, "label": "Orange", "precision": 0.92, "recall": 0.93, "f1": 0.925 },
-    { "class_id": 3, "label": "Strawberry", "precision": 0.88, "recall": 0.9, "f1": 0.89 },
-    { "class_id": 4, "label": "Grape", "precision": 0.91, "recall": 0.89, "f1": 0.9 }
+    { "class_id": 0, "label": "Apple Pink Lady 1", "precision": 0.95, "recall": 0.94, "f1": 0.945 },
+    { "class_id": 1, "label": "Apricot 1", "precision": 0.98, "recall": 0.97, "f1": 0.975 },
+    { "class_id": 2, "label": "Avocado 1", "precision": 0.92, "recall": 0.93, "f1": 0.925 },
+    { "class_id": 3, "label": "Banana 4", "precision": 0.88, "recall": 0.9, "f1": 0.89 },
+    { "class_id": 4, "label": "Beans 1", "precision": 0.91, "recall": 0.89, "f1": 0.9 }
   ]
 }
