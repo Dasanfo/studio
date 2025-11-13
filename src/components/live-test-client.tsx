@@ -47,31 +47,6 @@ export function LiveTestClient({ testImages }: { testImages: TestImage[] }) {
       fileInputRef.current.value = '';
     }
   };
-
-  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    
-    const file = formData.get('image') as File;
-    const hasFile = file && file.size > 0;
-
-    if (!selectedImage && !hasFile) {
-        toast({
-            variant: "destructive",
-            title: "No Image Selected",
-            description: "Please select a sample image or upload your own.",
-        });
-        return;
-    }
-
-    if (selectedImage) {
-      formData.set('imageUrl', selectedImage.imageUrl);
-      if (hasFile) {
-        formData.delete('image');
-      }
-    }
-    formAction(formData);
-  };
   
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -83,6 +58,33 @@ export function LiveTestClient({ testImages }: { testImages: TestImage[] }) {
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  // When the form is submitted, if a sample image is selected,
+  // we add its URL to the form data before the action is executed.
+  const handleFormAction = (formData: FormData) => {
+    const file = formData.get('image') as File;
+    const hasFile = file && file.size > 0;
+
+    if (!selectedImage && !hasFile) {
+        toast({
+            variant: "destructive",
+            title: "No Image Selected",
+            description: "Please select a sample image or upload your own.",
+        });
+        // By returning here, we prevent the form action from being called.
+        // We'd ideally want to prevent submission altogether, but that's more complex with form actions.
+        return; 
+    }
+
+    if (selectedImage) {
+        formData.set('imageUrl', selectedImage.imageUrl);
+        // If a sample is selected, we prioritize it over the file input.
+        if (hasFile) {
+            formData.delete('image');
+        }
+    }
+    formAction(formData);
   };
 
 
@@ -129,7 +131,7 @@ export function LiveTestClient({ testImages }: { testImages: TestImage[] }) {
                     <XCircle className="mx-auto h-12 w-12 text-muted-foreground" />
                     <h3 className="mt-4 text-lg font-semibold">No Test Images Found</h3>
                     <p className="mt-1 text-sm text-muted-foreground">
-                        Could not load images from the `src/lib/Test` directory.
+                        Could not load images from the `src/Test` directory.
                     </p>
                 </div>
             )}
@@ -147,7 +149,7 @@ export function LiveTestClient({ testImages }: { testImages: TestImage[] }) {
           <CardTitle className="font-headline text-xl">Upload Your Own Image</CardTitle>
         </CardHeader>
         <CardContent>
-          <form ref={formRef} onSubmit={handleFormSubmit} className="space-y-6">
+          <form ref={formRef} action={handleFormAction} className="space-y-6">
             <div className="space-y-2">
               <Label htmlFor="image">Fruit Image</Label>
               <Input id="image" name="image" type="file" accept="image/*" ref={fileInputRef} onChange={handleFileChange} />
@@ -242,3 +244,5 @@ export function LiveTestClient({ testImages }: { testImages: TestImage[] }) {
     </div>
   );
 }
+
+    
