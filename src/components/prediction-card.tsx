@@ -9,6 +9,7 @@ import { Progress } from '@/components/ui/progress';
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
 import type { PredictionResult } from '@/lib/types';
 import { BrainCircuit, Spline, Rocket, Clock } from 'lucide-react';
+import React from 'react';
 
 const icons = {
   cnn: <BrainCircuit className="h-6 w-6 text-muted-foreground" />,
@@ -18,13 +19,13 @@ const icons = {
 
 type PredictionCardProps = {
     result: PredictionResult;
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
-export function PredictionCard({ result }: PredictionCardProps) {
+export function PredictionCard({ result, ...props }: PredictionCardProps) {
     const topPrediction = result.probabilities[0];
 
     return (
-        <Card className="w-full">
+        <Card className="w-full animate-fade-in" {...props}>
             <CardHeader>
                 <div className="flex justify-between items-start">
                     <CardTitle className="font-headline flex items-center gap-2">

@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import type { Model, GlobalMetrics } from '@/lib/types';
 import Link from 'next/link';
 import { BrainCircuit, Spline, Rocket, ArrowRight } from 'lucide-react';
+import React from 'react';
 
 const icons = {
   neural_network: <BrainCircuit className="h-8 w-8 text-primary" />,
@@ -20,11 +21,11 @@ const icons = {
 type ModelCardProps = {
   model: Model;
   metrics: GlobalMetrics;
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
-export function ModelCard({ model, metrics }: ModelCardProps) {
+export function ModelCard({ model, metrics, ...props }: ModelCardProps) {
   return (
-    <Card className="flex h-full flex-col">
+    <Card className="flex h-full flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-1 animate-fade-in" {...props}>
       <CardHeader className="flex flex-row items-start gap-4">
         {icons[model.type as keyof typeof icons] || <BrainCircuit className="h-8 w-8 text-primary" />}
         <div>

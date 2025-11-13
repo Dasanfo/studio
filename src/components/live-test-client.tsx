@@ -32,7 +32,7 @@ export function LiveTestClient() {
   }, [state, toast])
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 animate-fade-in-up">
       <div>
         <h1 className="text-3xl font-bold tracking-tight font-headline">
           Live Prediction Test
@@ -67,7 +67,7 @@ export function LiveTestClient() {
       </Card>
       
       {isPending && (
-          <div className="flex items-center justify-center rounded-lg border border-dashed p-12 text-center">
+          <div className="flex items-center justify-center rounded-lg border border-dashed p-12 text-center animate-fade-in">
               <div className="flex flex-col items-center gap-2 text-muted-foreground">
                 <LoaderCircle className="h-10 w-10 animate-spin text-primary"/>
                 <p className="text-lg font-medium">Analyzing image...</p>
@@ -77,7 +77,7 @@ export function LiveTestClient() {
       )}
 
       {state.predictions && state.imagePreview && (
-        <Card>
+        <Card className="animate-fade-in">
             <CardHeader>
                 <CardTitle className="font-headline text-xl">Prediction Results</CardTitle>
             </CardHeader>
@@ -94,15 +94,19 @@ export function LiveTestClient() {
                     <div className="flex flex-col gap-4">
                         <h3 className="font-semibold font-headline">Model Outputs</h3>
                         <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-2">
-                            {state.predictions.results.map(result => (
-                                <PredictionCard key={result.model_id} result={result} />
+                            {state.predictions.results.map((result, index) => (
+                                <PredictionCard 
+                                    key={result.model_id} 
+                                    result={result} 
+                                    style={{ animationDelay: `${index * 100}ms` }}
+                                />
                             ))}
                         </div>
                     </div>
                 </div>
 
                 {state.summary && (
-                    <Alert className="bg-primary/5 border-primary/20">
+                    <Alert className="bg-primary/5 border-primary/20 animate-fade-in" style={{ animationDelay: '300ms' }}>
                         <Sparkles className="h-4 w-4 text-primary" />
                         <AlertTitle className="font-headline text-primary">AI Summary</AlertTitle>
                         <AlertDescription className="text-primary/90">
@@ -115,7 +119,7 @@ export function LiveTestClient() {
       )}
 
       {!isPending && !state.predictions && (
-        <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-12 text-center">
+        <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-12 text-center animate-fade-in">
           <UploadCloud className="mx-auto h-12 w-12 text-muted-foreground" />
           <h3 className="mt-4 text-lg font-semibold">Awaiting Image</h3>
           <p className="mt-1 text-sm text-muted-foreground">

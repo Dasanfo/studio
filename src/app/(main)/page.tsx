@@ -6,7 +6,7 @@ export default async function HomePage() {
   const allMetrics = await getGlobalMetrics();
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 animate-fade-in-up">
       <div>
         <h1 className="text-3xl font-bold tracking-tight font-headline">
           Fruit Classification Model Comparator
@@ -17,8 +17,13 @@ export default async function HomePage() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {models.map((model) => (
-          <ModelCard key={model.id} model={model} metrics={allMetrics[model.id]} />
+        {models.map((model, index) => (
+          <ModelCard 
+            key={model.id} 
+            model={model} 
+            metrics={allMetrics[model.id]} 
+            style={{ animationDelay: `${index * 100}ms` }}
+          />
         ))}
       </div>
     </div>

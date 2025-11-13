@@ -32,7 +32,7 @@ export function ComparisonChart({ data, metric, metricLabel }: ComparisonChartPr
         <CardTitle className="font-headline text-xl">{metricLabel} Comparison</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="h-[400px] w-full">
+        <div className="h-[400px] w-full animate-fade-in">
           <ResponsiveContainer>
             <BarChart data={chartData} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
@@ -51,7 +51,7 @@ export function ComparisonChart({ data, metric, metricLabel }: ComparisonChartPr
                 }}
                 formatter={(value: number) => [formatter(value), metricLabel]}
               />
-              <Bar dataKey="value" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="value" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} animationDuration={1000} />
             </BarChart>
           </ResponsiveContainer>
         </div>

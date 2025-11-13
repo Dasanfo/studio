@@ -28,7 +28,7 @@ export function CompareModelsClient({ metrics }: { metrics: AllGlobalMetrics }) 
   };
   
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 animate-fade-in-up">
       <div>
         <h1 className="text-3xl font-bold tracking-tight font-headline">
           Model Comparison
@@ -39,7 +39,7 @@ export function CompareModelsClient({ metrics }: { metrics: AllGlobalMetrics }) 
       </div>
 
       <div className="grid gap-6">
-        <Card>
+        <Card className="animate-fade-in" style={{ animationDelay: '100ms' }}>
           <CardHeader>
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <CardTitle className="font-headline text-xl">Metric Visualization</CardTitle>
@@ -68,7 +68,7 @@ export function CompareModelsClient({ metrics }: { metrics: AllGlobalMetrics }) 
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="animate-fade-in" style={{ animationDelay: '200ms' }}>
           <CardHeader>
             <CardTitle className="font-headline text-xl">Global Metrics Summary</CardTitle>
             <CardDescription>A detailed look at the key performance indicators for each model.</CardDescription>

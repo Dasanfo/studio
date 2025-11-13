@@ -20,7 +20,7 @@ export function ModelDetailClient({
   confusionMatrix,
 }: ModelDetailClientProps) {
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 animate-fade-in-up">
       <div>
         <h1 className="text-3xl font-bold tracking-tight font-headline">
           {model.name}
@@ -30,25 +30,25 @@ export function ModelDetailClient({
         </p>
       </div>
 
-      <Card>
+      <Card className="animate-fade-in" style={{ animationDelay: '100ms' }}>
         <CardHeader>
           <CardTitle className="font-headline text-xl">Global Metrics</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-            <div className="rounded-lg border p-4">
+            <div className="rounded-lg border p-4 transition-transform hover:scale-105">
               <div className="text-sm text-muted-foreground">Accuracy</div>
               <div className="text-2xl font-bold">{(globalMetrics.accuracy * 100).toFixed(1)}%</div>
             </div>
-            <div className="rounded-lg border p-4">
+            <div className="rounded-lg border p-4 transition-transform hover:scale-105">
               <div className="text-sm text-muted-foreground">F1 (Macro)</div>
               <div className="text-2xl font-bold">{globalMetrics.f1_macro.toFixed(3)}</div>
             </div>
-            <div className="rounded-lg border p-4">
+            <div className="rounded-lg border p-4 transition-transform hover:scale-105">
               <div className="text-sm text-muted-foreground">Inference (ms)</div>
               <div className="text-2xl font-bold">{globalMetrics.avg_inference_time_ms.toFixed(1)}</div>
             </div>
-            <div className="rounded-lg border p-4">
+            <div className="rounded-lg border p-4 transition-transform hover:scale-105">
               <div className="text-sm text-muted-foreground">Size (MB)</div>
               <div className="text-2xl font-bold">{globalMetrics.model_size_mb.toFixed(1)}</div>
             </div>
@@ -56,7 +56,7 @@ export function ModelDetailClient({
         </CardContent>
       </Card>
       
-      <Tabs defaultValue="per-class">
+      <Tabs defaultValue="per-class" className="animate-fade-in" style={{ animationDelay: '200ms' }}>
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="per-class">Metrics per Class</TabsTrigger>
           <TabsTrigger value="confusion-matrix">Confusion Matrix</TabsTrigger>
