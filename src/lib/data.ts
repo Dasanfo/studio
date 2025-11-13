@@ -4,6 +4,8 @@ import path from 'path';
 import { AllGlobalMetrics, ConfusionMatrix, Model, PerClassMetrics } from './types';
 
 const dataPath = path.join(process.cwd(), 'src', 'data');
+const testImagePath = path.join(process.cwd(), 'src', 'lib', 'Test');
+
 
 async function readJsonFile<T>(filename: string): Promise<T> {
   try {
@@ -39,4 +41,38 @@ export async function getConfusionMatrix(modelId: string): Promise<ConfusionMatr
 
 export async function getLabels(): Promise<string[]> {
     return readJsonFile<string[]>('labels.json');
+}
+
+export async function getTestImages(): Promise<{ id: string, description: string, imageUrl: string }[]> {
+  try {
+    const fruitDirs = await fs.readdir(testImagePath);
+    const imagePromises = fruitDirs.map(async (fruitDir) => {
+      const dirPath = path.join(testImagePath, fruitDir);
+      const stats = await fs.stat(dirPath);
+      if (!stats.isDirectory()) return null;
+      
+      const files = await fs.readdir(dirPath);
+      const imageFile = files.find(file => /\.(jpg|jpeg|png)$/i.test(file));
+      
+      if (imageFile) {
+        const imagePath = path.join(dirPath, imageFile);
+        const imageBuffer = await fs.readFile(imagePath);
+        const imageBase64 = imageBuffer.toString('base64');
+        const mimeType = path.extname(imageFile).slice(1);
+        return {
+          id: fruitDir.replace(/\s/g, '-').toLowerCase(),
+          description: fruitDir,
+          imageUrl: `data:image/${mimeType};base64,${imageBase64}`,
+        };
+      }
+      return null;
+    });
+
+    const images = (await Promise.all(imagePromises)).filter(Boolean);
+    // @ts-ignore
+    return images;
+  } catch (error) {
+    console.error('Failed to read test images:', error);
+    return [];
+  }
 }

@@ -52,3 +52,9 @@ export type PredictionResult = {
 export type AllPredictionsResult = {
   results: PredictionResult[];
 };
+
+export type TestImage = {
+  id: string;
+  description: string;
+  imageUrl: string;
+};

@@ -1,10 +1,4 @@
-import data from './placeholder-images.json';
+import { TestImage } from './types';
 
-export type ImagePlaceholder = {
-  id: string;
-  description: string;
-  imageUrl: string;
-  imageHint: string;
-};
-
-export const PlaceHolderImages: ImagePlaceholder[] = data.placeholderImages;
+// This file is kept for type definition but the data is now loaded dynamically.
+export type ImagePlaceholder = TestImage;

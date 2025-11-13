@@ -11,7 +11,7 @@ import { UploadCloud, LoaderCircle, Sparkles } from 'lucide-react';
 import Image from 'next/image';
 import { PredictionCard } from './prediction-card';
 import { useToast } from '@/hooks/use-toast';
-import { PlaceHolderImages, ImagePlaceholder } from '@/lib/placeholder-images';
+import { TestImage } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { Separator } from './ui/separator';
 
@@ -19,12 +19,12 @@ const initialState = {
   message: '',
 };
 
-export function LiveTestClient() {
+export function LiveTestClient({ testImages }: { testImages: TestImage[] }) {
   const [state, formAction, isPending] = useActionState(predictAllModels, initialState);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const { toast } = useToast();
-  const [selectedImage, setSelectedImage] = useState<ImagePlaceholder | null>(null);
+  const [selectedImage, setSelectedImage] = useState<TestImage | null>(null);
 
   useEffect(() => {
     if (state.error) {
@@ -36,7 +36,7 @@ export function LiveTestClient() {
     }
   }, [state, toast]);
 
-  const handleImageSelect = (image: ImagePlaceholder) => {
+  const handleImageSelect = (image: TestImage) => {
     setSelectedImage(image);
     // Clear the file input if a sample image is selected
     if (fileInputRef.current) {
@@ -82,7 +82,7 @@ export function LiveTestClient() {
         </CardHeader>
         <CardContent>
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
-                {PlaceHolderImages.map((image) => (
+                {testImages.map((image) => (
                     <button 
                         key={image.id}
                         onClick={() => handleImageSelect(image)}
