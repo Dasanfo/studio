@@ -1,0 +1,21 @@
+
+[
+  {
+    "id": "cnn",
+    "name": "CNN (Convolutional)",
+    "type": "neural_network",
+    "file": "cnn_model.keras"
+  },
+  {
+    "id": "svm",
+    "name": "SVM (Support Vector)",
+    "type": "svm",
+    "file": "svm_model.joblib"
+  },
+  {
+    "id": "boosting",
+    "name": "XGBoost",
+    "type": "boosting",
+    "file": "boosting_model.pkl"
+  }
+]

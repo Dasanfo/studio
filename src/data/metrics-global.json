@@ -1,0 +1,24 @@
+
+{
+  "cnn": {
+    "accuracy": 0.93,
+    "f1_macro": 0.92,
+    "f1_micro": 0.93,
+    "avg_inference_time_ms": 12.5,
+    "model_size_mb": 20.3
+  },
+  "svm": {
+    "accuracy": 0.89,
+    "f1_macro": 0.88,
+    "f1_micro": 0.89,
+    "avg_inference_time_ms": 5.2,
+    "model_size_mb": 3.7
+  },
+  "boosting": {
+    "accuracy": 0.91,
+    "f1_macro": 0.9,
+    "f1_micro": 0.91,
+    "avg_inference_time_ms": 7.8,
+    "model_size_mb": 8.1
+  }
+}
