@@ -4,7 +4,7 @@ import path from 'path';
 import { AllGlobalMetrics, ConfusionMatrix, Model, PerClassMetrics } from './types';
 
 const dataPath = path.join(process.cwd(), 'src', 'data');
-const testImagePath = path.join(process.cwd(), 'src', 'lib', 'Test');
+const testImagePath = path.join(process.cwd(), 'src', 'Test');
 
 
 async function readJsonFile<T>(filename: string): Promise<T> {
