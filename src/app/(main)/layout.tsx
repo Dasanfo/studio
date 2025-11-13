@@ -1,8 +1,4 @@
-import { DashboardSidebar, MobileSidebarTrigger } from '@/components/dashboard-sidebar';
-import {
-  SidebarProvider,
-  SidebarInset,
-} from '@/components/ui/sidebar';
+import { TopNavigation } from '@/components/top-navigation';
 
 export default function DashboardLayout({
   children,
@@ -10,14 +6,11 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <SidebarProvider>
-      <DashboardSidebar />
-      <SidebarInset>
-        <header className="sticky top-0 z-10 flex h-14 items-center justify-between gap-4 border-b bg-background px-4 sm:px-6 md:justify-end">
-            <MobileSidebarTrigger />
-        </header>
-        <main className="flex-1 p-4 md:p-8">{children}</main>
-      </SidebarInset>
-    </SidebarProvider>
+    <div className="flex min-h-screen w-full flex-col">
+      <TopNavigation />
+      <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
+        {children}
+      </main>
+    </div>
   );
 }
