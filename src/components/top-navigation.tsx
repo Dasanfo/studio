@@ -80,7 +80,13 @@ export function TopNavigation() {
         </DropdownMenu>
       </div>
       <div className="flex w-full items-center gap-4 md:ml-auto md:flex-initial">
-        {/* Future elements like search or user menu can go here */}
+        <Link
+          href="/"
+          className="flex items-center gap-2 text-lg font-semibold text-primary md:hidden"
+        >
+          <Grape className="h-6 w-6" />
+          <span className="font-bold">FruitVision</span>
+        </Link>
       </div>
     </header>
   );
