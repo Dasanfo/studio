@@ -1,21 +1,19 @@
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import type { GlobalMetrics, Model, PerClassMetrics, ConfusionMatrix } from '@/lib/types';
+import type { GlobalMetrics, Model, ConfusionMatrix } from '@/lib/types';
 import { ConfusionMatrixHeatmap } from './charts/confusion-matrix';
 import Image from 'next/image';
 
 type ModelDetailClientProps = {
   model: Model;
   globalMetrics: GlobalMetrics;
-  perClassMetrics: PerClassMetrics | null;
   confusionMatrix: ConfusionMatrix;
 };
 
 export function ModelDetailClient({
   model,
   globalMetrics,
-  perClassMetrics,
   confusionMatrix,
 }: ModelDetailClientProps) {
   return (

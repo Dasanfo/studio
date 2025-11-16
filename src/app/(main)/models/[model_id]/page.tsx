@@ -1,5 +1,5 @@
 import { ModelDetailClient } from '@/components/model-detail-client';
-import { getModelById, getGlobalMetrics, getConfusionMatrix, getModels, getPerClassMetrics } from '@/lib/data';
+import { getModelById, getGlobalMetrics, getConfusionMatrix, getModels } from '@/lib/data';
 import { notFound } from 'next/navigation';
 
 type ModelPageProps = {
@@ -29,9 +29,8 @@ export default async function ModelPage({ params }: ModelPageProps) {
   }
 
   try {
-    const [allGlobalMetrics, perClassMetrics, confusionMatrix] = await Promise.all([
+    const [allGlobalMetrics, confusionMatrix] = await Promise.all([
       getGlobalMetrics(),
-      getPerClassMetrics(model_id),
       getConfusionMatrix(model_id),
     ]);
     
@@ -46,7 +45,6 @@ export default async function ModelPage({ params }: ModelPageProps) {
         <ModelDetailClient 
             model={model}
             globalMetrics={globalMetrics}
-            perClassMetrics={perClassMetrics}
             confusionMatrix={confusionMatrix}
         />
     );
