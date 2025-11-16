@@ -2,15 +2,22 @@
 
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import type { AllGlobalMetrics } from '@/lib/types';
+import type { AllGlobalMetrics, Model } from '@/lib/types';
 
 type ComparisonChartProps = {
   data: AllGlobalMetrics;
-  metric: keyof AllGlobalMetrics['cnn'];
+  metric: keyof AllGlobalMetrics['cnn_simple'];
   metricLabel: string;
 };
 
-const formatters: Record<keyof AllGlobalMetrics['cnn'], (value: number) => string> = {
+const modelNames: Record<Model['id'], string> = {
+    cnn_simple: "CNN Simple",
+    cnn_transfer: "CNN Transfer",
+    svm: "SVM",
+    boosting: "XGBoost",
+}
+
+const formatters: Record<keyof AllGlobalMetrics['cnn_simple'], (value: number) => string> = {
   accuracy: (value) => `${(value * 100).toFixed(1)}%`,
   f1_macro: (value) => value.toFixed(3),
   f1_micro: (value) => value.toFixed(3),
@@ -20,7 +27,7 @@ const formatters: Record<keyof AllGlobalMetrics['cnn'], (value: number) => strin
 
 export function ComparisonChart({ data, metric, metricLabel }: ComparisonChartProps) {
   const chartData = Object.entries(data).map(([modelId, metrics]) => ({
-    name: modelId.toUpperCase(),
+    name: modelNames[modelId as Model['id']],
     value: metrics[metric],
   }));
 
@@ -40,7 +47,7 @@ export function ComparisonChart({ data, metric, metricLabel }: ComparisonChartPr
               <YAxis
                 stroke="hsl(var(--muted-foreground))"
                 tickFormatter={formatter}
-                domain={['auto', 'auto']}
+                domain={metric === 'accuracy' || metric === 'f1_macro' || metric === 'f1_micro' ? [0.8, 1] : ['auto', 'auto']}
               />
               <Tooltip
                 cursor={{ fill: 'hsl(var(--muted))' }}

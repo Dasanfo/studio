@@ -1,5 +1,5 @@
 export type Model = {
-  id: 'cnn' | 'svm' | 'boosting';
+  id: 'cnn_simple' | 'cnn_transfer' | 'svm' | 'boosting';
   name: string;
   type: string;
   file: string;

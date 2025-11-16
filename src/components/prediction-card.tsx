@@ -7,15 +7,29 @@ import {
 } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
-import type { PredictionResult } from '@/lib/types';
+import type { PredictionResult, Model } from '@/lib/types';
 import { BrainCircuit, Spline, Rocket, Clock } from 'lucide-react';
 import React from 'react';
 
-const icons = {
-  cnn: <BrainCircuit className="h-6 w-6 text-muted-foreground" />,
+const icons: Record<string, JSX.Element> = {
+  neural_network: <BrainCircuit className="h-6 w-6 text-muted-foreground" />,
   svm: <Spline className="h-6 w-6 text-muted-foreground" />,
   boosting: <Rocket className="h-6 w-6 text-muted-foreground" />,
 };
+
+const modelDisplayNames: Record<Model['id'], string> = {
+    cnn_simple: "CNN (Simple)",
+    cnn_transfer: "CNN (Transfer Learning)",
+    svm: "SVM",
+    boosting: "XGBoost",
+}
+
+const modelTypes: Record<Model['id'], string> = {
+    cnn_simple: "neural_network",
+    cnn_transfer: "neural_network",
+    svm: "svm",
+    boosting: "boosting",
+}
 
 type PredictionCardProps = {
     result: PredictionResult;
@@ -23,14 +37,15 @@ type PredictionCardProps = {
 
 export function PredictionCard({ result, ...props }: PredictionCardProps) {
     const topPrediction = result.probabilities[0];
+    const modelType = modelTypes[result.model_id];
 
     return (
         <Card className="w-full animate-fade-in" {...props}>
             <CardHeader>
                 <div className="flex justify-between items-start">
                     <CardTitle className="font-headline flex items-center gap-2">
-                        {icons[result.model_id]}
-                        {result.model_id.toUpperCase()}
+                        {icons[modelType]}
+                        {modelDisplayNames[result.model_id]}
                     </CardTitle>
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Clock className="h-4 w-4" />

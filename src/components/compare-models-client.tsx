@@ -4,10 +4,10 @@ import { ComparisonChart } from '@/components/charts/comparison-chart';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import type { AllGlobalMetrics } from '@/lib/types';
+import type { AllGlobalMetrics, Model } from '@/lib/types';
 
 type MetricOption = {
-  value: keyof AllGlobalMetrics['cnn'];
+  value: keyof AllGlobalMetrics['cnn_simple'];
   label: string;
 };
 
@@ -18,6 +18,13 @@ const metricOptions: MetricOption[] = [
   { value: 'avg_inference_time_ms', label: 'Avg. Inference Time (ms)' },
   { value: 'model_size_mb', label: 'Model Size (MB)' },
 ];
+
+const modelNames: Record<Model['id'], string> = {
+    cnn_simple: "CNN (Simple)",
+    cnn_transfer: "CNN (Transfer Learning)",
+    svm: "SVM",
+    boosting: "XGBoost",
+}
 
 export function CompareModelsClient({ metrics }: { metrics: AllGlobalMetrics }) {
   const [selectedMetric, setSelectedMetric] = useState<MetricOption>(metricOptions[0]);
@@ -87,7 +94,7 @@ export function CompareModelsClient({ metrics }: { metrics: AllGlobalMetrics }) 
               <TableBody>
                 {Object.entries(metrics).map(([modelId, modelMetrics]) => (
                   <TableRow key={modelId}>
-                    <TableCell className="font-medium">{modelId.toUpperCase()}</TableCell>
+                    <TableCell className="font-medium">{modelNames[modelId as Model['id']]}</TableCell>
                     <TableCell className="text-right">{(modelMetrics.accuracy * 100).toFixed(1)}%</TableCell>
                     <TableCell className="text-right">{modelMetrics.f1_macro.toFixed(3)}</TableCell>
                     <TableCell className="text-right">{modelMetrics.avg_inference_time_ms.toFixed(1)}</TableCell>

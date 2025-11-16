@@ -1,10 +1,16 @@
 
 [
   {
-    "id": "cnn",
-    "name": "CNN (Convolutional)",
+    "id": "cnn_simple",
+    "name": "CNN (Simple)",
     "type": "neural_network",
-    "file": "cnn_model.keras"
+    "file": "cnn_simple_model.keras"
+  },
+  {
+    "id": "cnn_transfer",
+    "name": "CNN (Transfer Learning)",
+    "type": "neural_network",
+    "file": "mobilenetv2_fruits_best.keras"
   },
   {
     "id": "svm",
