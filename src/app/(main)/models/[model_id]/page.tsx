@@ -1,5 +1,5 @@
 import { ModelDetailClient } from '@/components/model-detail-client';
-import { getModelById, getGlobalMetrics, getPerClassMetrics, getConfusionMatrix, getModels } from '@/lib/data';
+import { getModelById, getGlobalMetrics, getConfusionMatrix, getModels, getPerClassMetrics } from '@/lib/data';
 import { notFound } from 'next/navigation';
 
 type ModelPageProps = {
@@ -37,7 +37,7 @@ export default async function ModelPage({ params }: ModelPageProps) {
     
     const globalMetrics = allGlobalMetrics[model.id as keyof typeof allGlobalMetrics];
 
-    if (!globalMetrics || !perClassMetrics || !confusionMatrix) {
+    if (!globalMetrics || !confusionMatrix) {
         // This case handles if a data file is missing for a valid model id
         notFound();
     }

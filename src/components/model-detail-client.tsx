@@ -1,15 +1,14 @@
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import type { GlobalMetrics, Model, PerClassMetrics, ConfusionMatrix } from '@/lib/types';
-import { PerClassChart } from './charts/per-class-chart';
 import { ConfusionMatrixHeatmap } from './charts/confusion-matrix';
+import Image from 'next/image';
 
 type ModelDetailClientProps = {
   model: Model;
   globalMetrics: GlobalMetrics;
-  perClassMetrics: PerClassMetrics;
+  perClassMetrics: PerClassMetrics | null;
   confusionMatrix: ConfusionMatrix;
 };
 
@@ -56,47 +55,10 @@ export function ModelDetailClient({
         </CardContent>
       </Card>
       
-      <Tabs defaultValue="per-class" className="animate-fade-in" style={{ animationDelay: '200ms' }}>
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="per-class">Metrics per Class</TabsTrigger>
+      <Tabs defaultValue="confusion-matrix" className="animate-fade-in" style={{ animationDelay: '200ms' }}>
+        <TabsList className="grid w-full grid-cols-1">
           <TabsTrigger value="confusion-matrix">Confusion Matrix</TabsTrigger>
         </TabsList>
-        <TabsContent value="per-class">
-          <Card>
-            <CardHeader>
-              <CardTitle className="font-headline text-xl">Performance by Fruit</CardTitle>
-              <CardDescription>Precision, Recall, and F1-Score for each class.</CardDescription>
-            </CardHeader>
-            <CardContent className="grid gap-6 lg:grid-cols-2">
-              <div className='overflow-auto h-[400px]'>
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                        <TableHead>Fruit</TableHead>
-                        <TableHead className="text-right">Precision</TableHead>
-                        <TableHead className="text-right">Recall</TableHead>
-                        <TableHead className="text-right">F1-Score</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {perClassMetrics.per_class.map((item) => (
-                        <TableRow key={item.class_id}>
-                            <TableCell className="font-medium">{item.label}</TableCell>
-                            <TableCell className="text-right">{item.precision.toFixed(3)}</TableCell>
-                            <TableCell className="text-right">{item.recall.toFixed(3)}</TableCell>
-                            <TableCell className="text-right font-semibold">{item.f1.toFixed(3)}</TableCell>
-                        </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-              </div>
-              <div className="pl-4">
-                <h3 className="text-lg font-semibold mb-4 text-center font-headline">F1-Score Distribution</h3>
-                <PerClassChart data={perClassMetrics.per_class} />
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
         <TabsContent value="confusion-matrix">
             <Card>
                 <CardHeader>
@@ -106,7 +68,19 @@ export function ModelDetailClient({
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <ConfusionMatrixHeatmap data={confusionMatrix} />
+                    {model.id === 'cnn_transfer' ? (
+                      <div className="flex justify-center">
+                        <Image 
+                          src="/cnn_t.png"
+                          alt="Confusion Matrix for CNN with Transfer Learning"
+                          width={800}
+                          height={800}
+                          className="rounded-lg"
+                        />
+                      </div>
+                    ) : (
+                      <ConfusionMatrixHeatmap data={confusionMatrix} />
+                    )}
                 </CardContent>
             </Card>
         </TabsContent>

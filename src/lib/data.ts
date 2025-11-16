@@ -33,23 +33,13 @@ export async function getGlobalMetrics(): Promise<AllGlobalMetrics> {
   return readJsonFile<AllGlobalMetrics>('metrics-global.json');
 }
 
-export async function getPerClassMetrics(modelId: string): Promise<PerClassMetrics> {
+export async function getPerClassMetrics(modelId: string): Promise<PerClassMetrics | null> {
   const fileName = `metrics-${modelId}-per-class.json`;
   try {
     return await readJsonFile<PerClassMetrics>(fileName);
   } catch (error) {
-    console.warn(`Warning: Could not find ${fileName}. Returning mock data.`);
-    const labels = await getLabels();
-    return {
-      model_id: modelId as Model['id'],
-      per_class: labels.slice(0, 50).map((label, index) => ({
-        class_id: index,
-        label: label,
-        precision: Math.random() * (0.99 - 0.85) + 0.85,
-        recall: Math.random() * (0.99 - 0.85) + 0.85,
-        f1: Math.random() * (0.99 - 0.85) + 0.85,
-      }))
-    }
+    // It's okay if the file doesn't exist, we'll handle it in the component.
+    return null;
   }
 }
 
