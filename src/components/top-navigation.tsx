@@ -60,12 +60,7 @@ export function TopNavigation() {
         </nav>
         
         <div className="hidden md:flex">
-             <Link
-                href="#"
-                className="flex items-center justify-center rounded-full px-4 py-2 text-sm font-medium transition-colors h-10 w-auto text-gray-300 hover:bg-white/10 hover:text-white"
-              >
-                <User className="h-5 w-5" />
-              </Link>
+             
         </div>
 
         {/* Mobile Navigation */}
@@ -78,7 +73,7 @@ export function TopNavigation() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="border-white/10 bg-black/50 text-white backdrop-blur-lg">
-              {[...links, {href: "#", label: "Profile", icon: User}].map((link) => (
+              {links.map((link) => (
                 <DropdownMenuItem key={link.href} asChild>
                   <Link href={link.href} className="flex items-center gap-2">
                     <link.icon className="h-4 w-4" />
