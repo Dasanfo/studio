@@ -12,7 +12,9 @@ services:
     depends_on:
       - api
     restart: unless-stopped
-
+    volumes:
+      - ./src/Test:/app/src/Test:ro  
+      
   api:
     build:
       context: ./backend
