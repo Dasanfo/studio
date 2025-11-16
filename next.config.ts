@@ -30,13 +30,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  webpack: (config, { isServer }) => {
-    if (isServer) {
-      // TensorFlow.js requires this to resolve its native bindings
-      config.externals.push('node-gyp-build');
-    }
-    return config;
-  },
 };
 
 export default nextConfig;

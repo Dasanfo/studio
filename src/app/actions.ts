@@ -4,9 +4,6 @@ import { z } from 'zod';
 import { getLabels, getModels } from '@/lib/data';
 import type { AllPredictionsResult, PredictionResult, Model } from '@/lib/types';
 import { summarizePredictionResults } from '@/ai/flows/summarize-prediction-results';
-import * as tf from '@tensorflow/tfjs-node';
-import sharp from 'sharp';
-import path from 'path';
 
 const schema = z.object({
   image: z.instanceof(File).optional(),
@@ -21,44 +18,7 @@ type FormState = {
   error?: boolean;
 };
 
-// Global cache for models to avoid reloading them on every request
-const modelCache: { [key: string]: tf.LayersModel } = {};
-
-async function loadKerasModel(modelId: string, modelPath: string) {
-  if (modelCache[modelId]) {
-    return modelCache[modelId];
-  }
-  console.log(`Loading model from: ${modelPath}`);
-  try {
-    const model = await tf.loadLayersModel(`file://${modelPath}`);
-    modelCache[modelId] = model;
-    console.log(`Model ${modelId} loaded successfully.`);
-    return model;
-  } catch (e) {
-    console.error(`Error loading model ${modelId}:`, e);
-    throw new Error(`Could not load model ${modelId}.`);
-  }
-}
-
-async function preprocessImage(imageBuffer: Buffer, width: number, height: number): Promise<tf.Tensor> {
-  const imageTensor = tf.tidy(() => {
-    // Decode the image
-    let tensor = tf.node.decodeImage(imageBuffer, 3) as tf.Tensor3D;
-    
-    // Resize the image
-    const resized = tf.image.resizeBilinear(tensor, [height, width]);
-    
-    // Normalize the image to the range [0, 1]
-    const normalized = resized.div(tf.scalar(255.0));
-
-    // Expand dimensions to create a batch of 1
-    return normalized.expandDims(0);
-  });
-  return imageTensor;
-}
-
-
-// Helper to shuffle array and get top probabilities for MOCKED models
+// Helper to shuffle array and get top probabilities
 function getMockProbabilities(labels: string[], predictedLabel: string): PredictionResult['probabilities'] {
   let remainingProb = 1.0;
   
@@ -126,56 +86,22 @@ export async function predictAllModels(
   try {
     const [models, labels] = await Promise.all([getModels(), getLabels()]);
     
+    // MOCK INFERENCE FOR ALL MODELS
     const predictionPromises = models.map(async (model): Promise<PredictionResult> => {
       const startTime = performance.now();
       
-      if (model.type === 'neural_network') {
-        const modelPath = path.join(process.cwd(), 'src', 'app', 'models', model.file);
-        const kerasModel = await loadKerasModel(model.id, modelPath);
-        
-        // Keras models expect 100x100
-        const imageTensor = await preprocessImage(imageBuffer, 100, 100);
-        
-        const prediction = kerasModel.predict(imageTensor) as tf.Tensor;
-        const probabilitiesArray = await prediction.data();
-        
-        tf.dispose([imageTensor, prediction]);
+      const predictedLabel = labels[Math.floor(Math.random() * labels.length)];
+      const probabilities = getMockProbabilities(labels, predictedLabel);
+      const endTime = performance.now();
+      const inferenceTime = endTime - startTime + (Math.random() * 15 + 5);
 
-        const probabilities = Array.from(probabilitiesArray).map((prob, index) => ({
-          label: labels[index],
-          prob,
-          index,
-        }));
-
-        probabilities.sort((a, b) => b.prob - a.prob);
-        
-        const topPrediction = probabilities[0];
-        const endTime = performance.now();
-        const inferenceTime = endTime - startTime;
-
-        return {
-          model_id: model.id,
-          predicted_label: topPrediction.label,
-          predicted_index: topPrediction.index,
-          probabilities: probabilities,
-          inference_time_ms: parseFloat(inferenceTime.toFixed(1)),
-        };
-
-      } else {
-        // MOCK INFERENCE FOR SVM and Boosting
-        const predictedLabel = labels[Math.floor(Math.random() * labels.length)];
-        const probabilities = getMockProbabilities(labels, predictedLabel);
-        const endTime = performance.now();
-        const inferenceTime = endTime - startTime + (Math.random() * 15 + 5);
-
-        return {
-          model_id: model.id,
-          predicted_label: predictedLabel,
-          predicted_index: labels.indexOf(predictedLabel),
-          probabilities,
-          inference_time_ms: parseFloat(inferenceTime.toFixed(1)),
-        };
-      }
+      return {
+        model_id: model.id,
+        predicted_label: predictedLabel,
+        predicted_index: labels.indexOf(predictedLabel),
+        probabilities,
+        inference_time_ms: parseFloat(inferenceTime.toFixed(1)),
+      };
     });
 
     const predictionResults = await Promise.all(predictionPromises);
