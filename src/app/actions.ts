@@ -77,7 +77,7 @@ export async function predictAllModels(
   try {
     // Docker networking: 'api' is the service name, port 8000 is internal
     const apiHost = process.env.API_HOST || 'localhost';
-    const apiPort = process.env.API_PORT || '8001';
+    const apiPort = process.env.API_PORT || '8000';
     const apiUrl = `http://${apiHost}:${apiPort}/predict/`;
     
     console.log(`Calling prediction API at: ${apiUrl}`);
